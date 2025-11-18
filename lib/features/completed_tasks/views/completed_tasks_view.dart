@@ -1,9 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:taskyapp2/core/widgets/task_list_widget.dart';
 
+import '../../../core/utils/app_colors.dart';
 import '../../../models/task_model.dart';
 
 class CompletedTasksView extends StatefulWidget {
@@ -51,40 +53,51 @@ class _CompletedTasksViewState extends State<CompletedTasksView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Completed Tasks'),
-        automaticallyImplyLeading: false,
-      ),
-      body: TaskListWidget(
-        tasks: completeTasks,
-        onTap: (bool? value, int? index) async {
-          setState(() {
-            completeTasks[index!].isDone = value ?? false;
-          });
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(18.0),
+          child: Text(
+            'Completed Tasks',
+            style: TextStyle(fontSize: 20.sp, color: AppColors.textColorAtDark),
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: TaskListWidget(
+              tasks: completeTasks,
+              onTap: (bool? value, int? index) async {
+                setState(() {
+                  completeTasks[index!].isDone = value ?? false;
+                });
 
-          final pref = await SharedPreferences.getInstance();
+                final pref = await SharedPreferences.getInstance();
 
-          final allData = pref.getString('tasks');
-          if (allData != null) {
-            List<TaskModel> allDataList =
-                (jsonDecode(allData) as List)
-                    .map((e) => TaskModel.fromJson(e))
-                    .toList();
+                final allData = pref.getString('tasks');
+                if (allData != null) {
+                  List<TaskModel> allDataList =
+                      (jsonDecode(allData) as List)
+                          .map((e) => TaskModel.fromJson(e))
+                          .toList();
 
-            final int newIndex = allDataList.indexWhere(
-              (e) => e.id == completeTasks[index!].id,
-            );
+                  final int newIndex = allDataList.indexWhere(
+                    (e) => e.id == completeTasks[index!].id,
+                  );
 
-            allDataList[newIndex] = completeTasks[index!];
+                  allDataList[newIndex] = completeTasks[index!];
 
-            await pref.setString('tasks', jsonEncode(allDataList));
+                  await pref.setString('tasks', jsonEncode(allDataList));
 
-            _loadTasks();
-          }
-        },
-        emptyMessage: 'No Tasks Completed',
-      ),
+                  _loadTasks();
+                }
+              },
+              emptyMessage: 'No Tasks Completed',
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

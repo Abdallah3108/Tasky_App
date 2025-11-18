@@ -115,7 +115,6 @@ class _AddTaskViewState extends State<AddTaskView> {
                                   isHighPriority = value;
                                 });
                               },
-                              activeTrackColor: AppColors.primary,
                             ),
                           ),
                         ],

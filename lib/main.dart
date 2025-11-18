@@ -19,6 +19,7 @@ class TaskyApp extends StatelessWidget {
   const TaskyApp({super.key, required this.username});
 
   final String? username;
+
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -39,6 +40,27 @@ class TaskyApp extends StatelessWidget {
                 fontWeight: FontWeight.w400,
               ),
               iconTheme: IconThemeData(color: AppColors.textColorAtDark),
+            ),
+            switchTheme: SwitchThemeData(
+              trackColor: WidgetStateProperty.resolveWith((state) {
+                if (state.contains(WidgetState.selected)) {
+                  return AppColors.primary;
+                }
+                return AppColors.secondaryTextColorAtDark;
+              }),
+              thumbColor: WidgetStateProperty.all(Colors.white),
+              trackOutlineColor: WidgetStateProperty.resolveWith((state) {
+                if (state.contains(WidgetState.selected)) {
+                  return Colors.transparent;
+                }
+                return AppColors.secondaryTextColorAtDark;
+              }),
+              trackOutlineWidth: WidgetStateProperty.resolveWith((state) {
+                if (state.contains(WidgetState.selected)) {
+                  return 0;
+                }
+                return 1;
+              }),
             ),
           ),
           title: 'Tasky App',

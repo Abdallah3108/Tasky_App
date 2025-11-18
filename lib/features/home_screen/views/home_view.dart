@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,6 +22,9 @@ class _HomeViewState extends State<HomeView> {
   String? username;
   List<TaskModel> tasks = [];
   bool isDone = false;
+  int totalTask = 0;
+  int doneTask = 0;
+  double percentage = 0;
 
   @override
   void initState() {
@@ -53,10 +57,15 @@ class _HomeViewState extends State<HomeView> {
 
       setState(() {
         tasks = taskAfterDecode.map((e) => TaskModel.fromJson(e)).toList();
+        _calculatePercentage();
       });
-
-      print("taskAfterDecode= $taskAfterDecode");
     }
+  }
+
+  _calculatePercentage() {
+    totalTask = tasks.length;
+    doneTask = tasks.where((element) => element.isDone).length;
+    percentage = totalTask == 0 ? 0 : doneTask / totalTask;
   }
 
   @override
@@ -142,6 +151,73 @@ class _HomeViewState extends State<HomeView> {
                   SvgPicture.asset('assets/hand.svg'),
                 ],
               ),
+              SizedBox(height: 16.h),
+              Container(
+                width: double.infinity,
+
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: AppColors.textFormFieldColor,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: Colors.grey),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Achieved Tasks',
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.textColorAtDark,
+                          ),
+                        ),
+                        Text(
+                          '${totalTask - doneTask} Out of ${totalTask} Done',
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Stack(
+                      alignment: Alignment.center,
+
+                      children: [
+                        Transform.rotate(
+                          angle: -pi / 2,
+                          child: SizedBox(
+                            width: 48,
+                            height: 48,
+                            child: CircularProgressIndicator(
+                              value: percentage,
+                              backgroundColor: Colors.grey,
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                AppColors.primary,
+                              ),
+                              color: AppColors.primary,
+                              strokeWidth: 4,
+                            ),
+                          ),
+                        ),
+                        Text(
+                          "${(percentage * 100).toInt()}%",
+                          style: TextStyle(
+                            color: AppColors.textColorAtDark,
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
               SizedBox(height: 20.h),
               Text(
                 'My Tasks',
@@ -159,6 +235,7 @@ class _HomeViewState extends State<HomeView> {
                   onTap: (bool? value, int? index) async {
                     setState(() {
                       tasks[index!].isDone = value ?? false;
+                      _calculatePercentage();
                     });
                     final pref = await SharedPreferences.getInstance();
                     final updatedTask = tasks.map((e) => e.toJson()).toList();
