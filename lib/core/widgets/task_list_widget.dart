@@ -26,6 +26,8 @@ class TaskListWidget extends StatelessWidget {
           ),
         )
         : ListView.builder(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
           itemCount: tasks.length,
           padding: EdgeInsets.only(bottom: 40).r,
           itemBuilder: (BuildContext context, int index) {
@@ -38,7 +40,7 @@ class TaskListWidget extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: AppColors.textFormFieldColor,
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Colors.grey),
+                  // border: Border.all(color: Colors.grey),
                 ),
                 child: Row(
                   children: [

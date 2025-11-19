@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,6 +6,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/utils/app_colors.dart';
+import '../../../core/widgets/achieved_tasks_widget.dart';
+import '../../../core/widgets/high_priority_tasks_widget.dart';
 import '../../../core/widgets/task_list_widget.dart';
 import '../../../models/task_model.dart';
 import '../../add_task_view/views/add_task_view.dart';
@@ -68,6 +69,16 @@ class _HomeViewState extends State<HomeView> {
     percentage = totalTask == 0 ? 0 : doneTask / totalTask;
   }
 
+  _doneTask(bool? value, int? index) async {
+    setState(() {
+      tasks[index!].isDone = value ?? false;
+      _calculatePercentage();
+    });
+    final pref = await SharedPreferences.getInstance();
+    final updatedTask = tasks.map((e) => e.toJson()).toList();
+    await pref.setString('tasks', jsonEncode(updatedTask));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,153 +108,102 @@ class _HomeViewState extends State<HomeView> {
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.all(16).r,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  CircleAvatar(
-                    backgroundImage: AssetImage('assets/person.png'),
-                  ),
-                  SizedBox(width: 8.w),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Good Evening ,${username} ',
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.textColorAtDark,
-                        ),
-                      ),
-                      Text(
-                        'One task at a time.One step closer.',
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.secondaryTextColorAtDark,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              SizedBox(height: 16.h),
-              Text(
-                'Yuhuu ,Your work Is',
-                style: TextStyle(
-                  fontSize: 24.sp,
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.textColorAtDark,
-                ),
-              ),
-              Row(
-                children: [
-                  Text(
-                    'almost done ! ',
-                    style: TextStyle(
-                      fontSize: 24.sp,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.textColorAtDark,
-                    ),
-                  ),
-                  SvgPicture.asset('assets/hand.svg'),
-                ],
-              ),
-              SizedBox(height: 16.h),
-              Container(
-                width: double.infinity,
-
-                padding: EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: AppColors.textFormFieldColor,
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: Colors.grey),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
                   children: [
+                    CircleAvatar(
+                      backgroundImage: AssetImage('assets/person.png'),
+                    ),
+                    SizedBox(width: 8.w),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Achieved Tasks',
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w400,
-                            color: AppColors.textColorAtDark,
-                          ),
-                        ),
-                        Text(
-                          '${totalTask - doneTask} Out of ${totalTask} Done',
+                          'Good Evening ,${username} ',
                           style: TextStyle(
                             fontSize: 14.sp,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.grey,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Stack(
-                      alignment: Alignment.center,
-
-                      children: [
-                        Transform.rotate(
-                          angle: -pi / 2,
-                          child: SizedBox(
-                            width: 48,
-                            height: 48,
-                            child: CircularProgressIndicator(
-                              value: percentage,
-                              backgroundColor: Colors.grey,
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                AppColors.primary,
-                              ),
-                              color: AppColors.primary,
-                              strokeWidth: 4,
-                            ),
+                            fontWeight: FontWeight.w500,
+                            color: AppColors.textColorAtDark,
                           ),
                         ),
                         Text(
-                          "${(percentage * 100).toInt()}%",
+                          'One task at a time.One step closer.',
                           style: TextStyle(
-                            color: AppColors.textColorAtDark,
-                            fontSize: 16.sp,
+                            fontSize: 12.sp,
                             fontWeight: FontWeight.w500,
+                            color: AppColors.secondaryTextColorAtDark,
                           ),
                         ),
                       ],
                     ),
                   ],
                 ),
-              ),
-              SizedBox(height: 20.h),
-              Text(
-                'My Tasks',
-                style: TextStyle(
-                  fontSize: 20.sp,
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.textColorAtDark,
+                SizedBox(height: 16.h),
+                Text(
+                  'Yuhuu ,Your work Is',
+                  style: TextStyle(
+                    fontSize: 24.sp,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.textColorAtDark,
+                  ),
                 ),
-              ),
-              SizedBox(height: 16.h),
-              Expanded(
-                child: TaskListWidget(
-                  emptyMessage: 'No Tasks',
+                Row(
+                  children: [
+                    Text(
+                      'almost done ! ',
+                      style: TextStyle(
+                        fontSize: 24.sp,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.textColorAtDark,
+                      ),
+                    ),
+                    SvgPicture.asset('assets/hand.svg'),
+                  ],
+                ),
+                SizedBox(height: 16.h),
+                AchievedTasksWidget(
+                  totalTask: totalTask,
+                  doneTask: doneTask,
+                  percentage: percentage,
+                ),
+                SizedBox(height: 8.h),
+                HighPriorityTasksWidget(
+                  refresh: () {
+                    _loadTasks();
+                  },
                   tasks: tasks,
                   onTap: (bool? value, int? index) async {
                     setState(() {
                       tasks[index!].isDone = value ?? false;
                       _calculatePercentage();
                     });
-                    final pref = await SharedPreferences.getInstance();
-                    final updatedTask = tasks.map((e) => e.toJson()).toList();
-                    await pref.setString('tasks', jsonEncode(updatedTask));
                   },
                 ),
-              ),
-            ],
+                SizedBox(height: 20.h),
+                Text(
+                  'My Tasks',
+                  style: TextStyle(
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.textColorAtDark,
+                  ),
+                ),
+                SizedBox(height: 16.h),
+                SizedBox(
+                  height: 400.h, // تقدر تعدل حسب المساحة المتاحة
+                  child: TaskListWidget(
+                    emptyMessage: 'No Tasks',
+                    tasks: tasks,
+                    onTap: (bool? value, int? index) async {
+                      _doneTask(value, index);
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
