@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:taskyapp2/core/services/preferences_manager.dart';
+import 'package:taskyapp2/features/user_details_view.dart';
+import 'package:taskyapp2/features/welcome_screen.dart';
 
-import '../../../core/utils/app_colors.dart';
+import '../core/utils/app_colors.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -13,21 +15,23 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  late final String username;
+  String? username;
+  late String motivationQuote;
   bool isLoading = true;
   bool isDarkMode = true;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    _loadUserName();
+    _loadData();
   }
 
-  void _loadUserName() async {
-    final pref = await SharedPreferences.getInstance();
+  void _loadData() async {
     setState(() {
-      username = pref.getString('username') ?? '';
+      username = PreferencesManager().getString('username') ?? '';
+      motivationQuote =
+          PreferencesManager().getString('motivationQuote') ??
+          'One task at a time. One step closer.';
       isLoading = false;
     });
   }
@@ -86,7 +90,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   SizedBox(height: 8.h),
                   Text(
-                    username,
+                    username ?? "",
                     style: TextStyle(
                       fontSize: 20.sp,
                       color: AppColors.textColorAtDark,
@@ -94,9 +98,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   SizedBox(height: 4.h),
                   Text(
-                    'One task at a time. One step closer.',
+                    motivationQuote ?? "One task at a time. One step closer.",
                     style: TextStyle(
                       fontSize: 16.sp,
+
                       color: Colors.grey,
                       fontWeight: FontWeight.w400,
                     ),
@@ -115,7 +120,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
               SizedBox(height: 8.h),
 
               ListTile(
-                onTap: () {},
+                onTap: () async {
+                  final result = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (BuildContext context) {
+                        return UserDetailsView(
+                          userName: username ?? "",
+                          motivationQuote: motivationQuote ?? "",
+                        );
+                      },
+                    ),
+                  );
+                  if (result != null && result) {
+                    _loadData();
+                  }
+                },
                 contentPadding: EdgeInsets.zero,
                 leading: SvgPicture.asset('assets/personicon.svg'),
                 title: Text(
@@ -153,8 +173,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Divider(color: AppColors.secondaryTextColorAtDark, thickness: 1),
 
               ListTile(
-                onTap: () {
-                  /// TODO: Log Out
+                onTap: () async {
+                  PreferencesManager().remove('username');
+                  PreferencesManager().remove('motivationQuote');
+                  PreferencesManager().remove('tasks');
+
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (BuildContext context) {
+                        return WelcomeScreen();
+                      },
+                    ),
+                    (Route<dynamic> route) => false,
+                  );
                 },
                 contentPadding: EdgeInsets.zero,
                 leading: SvgPicture.asset('assets/logout.svg'),

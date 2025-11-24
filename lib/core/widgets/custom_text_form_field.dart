@@ -29,7 +29,7 @@ class CustomTextFormField extends StatelessWidget {
       child: TextFormField(
         validator: validator,
         controller: controller,
-
+        textAlignVertical: TextAlignVertical.top,
         expands: height != null,
         maxLines: height == null ? 1 : null,
         minLines: height == null ? 1 : null,

@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:taskyapp2/core/services/preferences_manager.dart';
 import 'package:taskyapp2/models/task_model.dart';
 
-import '../../features/high_priority_tasks/views/high_priorty_tasks_view.dart';
+import '../../features/high_priorty_tasks_view.dart';
 import '../utils/app_colors.dart';
 
 class HighPriorityTasksWidget extends StatelessWidget {
@@ -63,10 +63,10 @@ class HighPriorityTasksWidget extends StatelessWidget {
                             (e) => e.id == element.id,
                           );
                           onTap(value, index);
-                          final pref = await SharedPreferences.getInstance();
+
                           final updatedTask =
                               tasks.map((e) => e.toJson()).toList();
-                          await pref.setString(
+                          await PreferencesManager().setString(
                             'tasks',
                             jsonEncode(updatedTask),
                           );

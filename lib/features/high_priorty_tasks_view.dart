@@ -2,11 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:taskyapp2/core/services/preferences_manager.dart';
 
-import '../../../core/utils/app_colors.dart';
-import '../../../core/widgets/task_list_widget.dart';
-import '../../../models/task_model.dart';
+import '../core/utils/app_colors.dart';
+import '../core/widgets/task_list_widget.dart';
+import '../models/task_model.dart';
 
 class HighPriorityTasksView extends StatefulWidget {
   const HighPriorityTasksView({super.key});
@@ -26,9 +26,7 @@ class _HighPriorityTasksViewState extends State<HighPriorityTasksView> {
   }
 
   void _loadTasks() async {
-    final pref = await SharedPreferences.getInstance();
-
-    final finalTask = pref.getString('tasks');
+    final finalTask = await PreferencesManager().getString('tasks');
     if (finalTask != null) {
       final decoded = jsonDecode(finalTask);
 
@@ -71,9 +69,8 @@ class _HighPriorityTasksViewState extends State<HighPriorityTasksView> {
             setState(() {
               highPriorityTasks[index!].isDone = value ?? false;
             });
-            final pref = await SharedPreferences.getInstance();
 
-            final allData = pref.getString('tasks');
+            final allData = PreferencesManager().getString('tasks');
             if (allData != null) {
               List<TaskModel> allDataList =
                   (jsonDecode(allData) as List)
@@ -83,8 +80,8 @@ class _HighPriorityTasksViewState extends State<HighPriorityTasksView> {
                 (e) => e.id == highPriorityTasks[index!].id,
               );
               allDataList[newIndex] = highPriorityTasks[index!];
+              PreferencesManager().setString('tasks', jsonEncode(allDataList));
 
-              await pref.setString('tasks', jsonEncode(allDataList));
               _loadTasks();
             }
           },

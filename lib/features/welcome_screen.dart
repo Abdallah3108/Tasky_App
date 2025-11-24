@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:taskyapp2/core/services/preferences_manager.dart';
 import 'package:taskyapp2/core/widgets/custom_text_form_field.dart';
 
-import '../../../core/utils/app_colors.dart';
-import '../../../core/widgets/custom_elevated_button.dart';
-import '../../main_screen/views/main_screen.dart';
+import '../core/utils/app_colors.dart';
+import '../core/widgets/custom_elevated_button.dart';
+import 'main_screen.dart';
 
-class GetStartedView extends StatelessWidget {
-  GetStartedView({super.key});
+class WelcomeScreen extends StatelessWidget {
+  WelcomeScreen({super.key});
 
   final TextEditingController nameController = TextEditingController();
 
@@ -99,9 +99,14 @@ class GetStartedView extends StatelessWidget {
                     width: double.infinity,
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        final pref = await SharedPreferences.getInstance();
-                        pref.setString('username', nameController.value.text);
-                        String? username = pref.getString('username');
+                        await PreferencesManager().setString(
+                          'username',
+                          nameController.value.text,
+                        );
+
+                        String? username = PreferencesManager().getString(
+                          'username',
+                        );
 
                         Navigator.pushReplacement(
                           context,

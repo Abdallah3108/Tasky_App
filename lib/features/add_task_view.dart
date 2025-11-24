@@ -2,13 +2,13 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:taskyapp2/models/task_model.dart';
 
-import '../../../core/utils/app_colors.dart';
-import '../../../core/widgets/custom_elevated_button.dart';
-import '../../../core/widgets/custom_text_form_field.dart';
-import '../../main_screen/views/main_screen.dart';
+import '../core/services/preferences_manager.dart';
+import '../core/utils/app_colors.dart';
+import '../core/widgets/custom_elevated_button.dart';
+import '../core/widgets/custom_text_form_field.dart';
+import 'main_screen.dart';
 
 class AddTaskView extends StatefulWidget {
   const AddTaskView({super.key});
@@ -29,14 +29,15 @@ class _AddTaskViewState extends State<AddTaskView> {
     return Scaffold(
       backgroundColor: AppColors.backgroundDark,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text('New Task'),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          color: AppColors.textColorAtDark,
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
+        // leading: IconButton(
+        //   icon: Icon(Icons.arrow_back),
+        //   color: AppColors.textColorAtDark,
+        //   onPressed: () {
+        //     Navigator.pop(context);
+        //   },
+        // ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16).r,
@@ -129,10 +130,7 @@ class _AddTaskViewState extends State<AddTaskView> {
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     // save data at {SharedPrefrence}
-                    final pref = await SharedPreferences.getInstance();
-
-                    //check by key{tasks} return => String?
-                    final taskJson = pref.getString('tasks');
+                    final taskJson = PreferencesManager().getString('tasks');
                     List<dynamic> listTasks =
                         []; //--> List<Map<String,dynamic>>
                     if (taskJson != null) {
@@ -149,10 +147,11 @@ class _AddTaskViewState extends State<AddTaskView> {
                     listTasks.add(model.toJson());
 
                     final taskEncode = jsonEncode(listTasks);
-                    await pref.setString('tasks', taskEncode);
+                    await PreferencesManager().setString('tasks', taskEncode);
+
                     // pref.setString('tasks', jsonEncode(listTasks));
 
-                    final finalTask = pref.getString('tasks');
+                    final finalTask = PreferencesManager().getString('tasks');
                     final taskAfterDecode =
                         jsonDecode(finalTask ?? "[]") as List<dynamic>;
 

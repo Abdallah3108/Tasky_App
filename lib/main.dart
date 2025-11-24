@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:taskyapp2/core/services/preferences_manager.dart';
 
 import 'core/utils/app_colors.dart';
-import 'features/get_started/views/get_started_view.dart';
-import 'features/main_screen/views/main_screen.dart';
+import 'features/main_screen.dart';
+import 'features/welcome_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final pref = await SharedPreferences.getInstance();
 
-  String? username = pref.getString('username');
+  await PreferencesManager().init();
+  String? username = PreferencesManager().getString('username');
 
+  //final pref = await SharedPreferences.getInstance();
+  // String? username = pref.getString('username');
   runApp(TaskyApp(username: username));
 }
 
@@ -62,9 +64,14 @@ class TaskyApp extends StatelessWidget {
                 return 1;
               }),
             ),
+            elevatedButtonTheme: ElevatedButtonThemeData(
+              style: ButtonStyle(
+                backgroundColor: WidgetStateProperty.all(AppColors.primary),
+              ),
+            ),
           ),
           title: 'Tasky App',
-          home: username == null ? GetStartedView() : MainScreen(),
+          home: username == null ? WelcomeScreen() : MainScreen(),
         );
       },
     );
