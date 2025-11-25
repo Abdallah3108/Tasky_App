@@ -40,10 +40,7 @@ class _UserDetailsViewState extends State<UserDetailsView> {
     return Scaffold(
       appBar: AppBar(
         // automaticallyImplyLeading: false,
-        title: Text(
-          'Usr Details',
-          style: TextStyle(fontSize: 20.sp, color: AppColors.textColorAtDark),
-        ),
+        title: Text('User Details', style: TextStyle(fontSize: 20.sp)),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0).r,

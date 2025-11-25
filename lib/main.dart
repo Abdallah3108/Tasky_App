@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taskyapp2/core/services/preferences_manager.dart';
+import 'package:taskyapp2/core/theme/dark_theme.dart';
+import 'package:taskyapp2/core/theme/light_theme.dart';
 
-import 'core/utils/app_colors.dart';
 import 'features/main_screen.dart';
 import 'features/welcome_screen.dart';
+
+//value notifier
+ValueNotifier<ThemeMode> themeNotifier = ValueNotifier(ThemeMode.light);
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,49 +33,18 @@ class TaskyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
-        return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            useMaterial3: true,
-            scaffoldBackgroundColor: AppColors.backgroundDark,
-            appBarTheme: AppBarTheme(
-              backgroundColor: AppColors.backgroundDark,
-              titleTextStyle: TextStyle(
-                color: AppColors.textColorAtDark,
-                fontSize: 20.sp,
-                fontWeight: FontWeight.w400,
-              ),
-              iconTheme: IconThemeData(color: AppColors.textColorAtDark),
-            ),
-            switchTheme: SwitchThemeData(
-              trackColor: WidgetStateProperty.resolveWith((state) {
-                if (state.contains(WidgetState.selected)) {
-                  return AppColors.primary;
-                }
-                return AppColors.secondaryTextColorAtDark;
-              }),
-              thumbColor: WidgetStateProperty.all(Colors.white),
-              trackOutlineColor: WidgetStateProperty.resolveWith((state) {
-                if (state.contains(WidgetState.selected)) {
-                  return Colors.transparent;
-                }
-                return AppColors.secondaryTextColorAtDark;
-              }),
-              trackOutlineWidth: WidgetStateProperty.resolveWith((state) {
-                if (state.contains(WidgetState.selected)) {
-                  return 0;
-                }
-                return 1;
-              }),
-            ),
-            elevatedButtonTheme: ElevatedButtonThemeData(
-              style: ButtonStyle(
-                backgroundColor: WidgetStateProperty.all(AppColors.primary),
-              ),
-            ),
-          ),
-          title: 'Tasky App',
-          home: username == null ? WelcomeScreen() : MainScreen(),
+        return ValueListenableBuilder<ThemeMode>(
+          valueListenable: themeNotifier,
+          builder: (context, ThemeMode value, Widget? child) {
+            return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              theme: lightTheme,
+              darkTheme: darkTheme,
+              themeMode: value,
+              title: 'Tasky App',
+              home: username == null ? WelcomeScreen() : MainScreen(),
+            );
+          },
         );
       },
     );

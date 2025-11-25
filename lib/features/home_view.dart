@@ -82,7 +82,6 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundDark,
       floatingActionButton: SizedBox(
         width: 167.w,
         height: 40.h,
@@ -125,18 +124,16 @@ class _HomeViewState extends State<HomeView> {
                           children: [
                             Text(
                               'Good Evening ,${username} ',
-                              style: TextStyle(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w500,
-                                color: AppColors.textColorAtDark,
-                              ),
+                              style: Theme.of(context).textTheme.labelMedium!
+                                  .copyWith(fontWeight: FontWeight.w500),
                             ),
                             Text(
                               'One task at a time.One step closer.',
-                              style: TextStyle(
-                                fontSize: 12.sp,
+                              style: Theme.of(
+                                context,
+                              ).textTheme.labelMedium!.copyWith(
                                 fontWeight: FontWeight.w500,
-                                color: AppColors.secondaryTextColorAtDark,
+                                fontSize: 12.sp,
                               ),
                             ),
                           ],
@@ -146,21 +143,13 @@ class _HomeViewState extends State<HomeView> {
                     SizedBox(height: 16.h),
                     Text(
                       'Yuhuu ,Your work Is',
-                      style: TextStyle(
-                        fontSize: 24.sp,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.textColorAtDark,
-                      ),
+                      style: Theme.of(context).textTheme.displayMedium!,
                     ),
                     Row(
                       children: [
                         Text(
                           'almost done ! ',
-                          style: TextStyle(
-                            fontSize: 24.sp,
-                            fontWeight: FontWeight.w400,
-                            color: AppColors.textColorAtDark,
-                          ),
+                          style: Theme.of(context).textTheme.displayMedium!,
                         ),
                         SvgPicture.asset('assets/hand.svg'),
                       ],

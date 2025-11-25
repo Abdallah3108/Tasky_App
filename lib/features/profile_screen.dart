@@ -6,6 +6,7 @@ import 'package:taskyapp2/features/user_details_view.dart';
 import 'package:taskyapp2/features/welcome_screen.dart';
 
 import '../core/utils/app_colors.dart';
+import '../main.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -166,6 +167,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     /// TODO: Change Theme
                     setState(() {
                       isDarkMode = value;
+                      if (isDarkMode) {
+                        themeNotifier.value = ThemeMode.dark;
+                      } else {
+                        themeNotifier.value = ThemeMode.light;
+                      }
                     });
                   },
                 ),

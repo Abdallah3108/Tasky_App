@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../utils/app_colors.dart';
 
 class CustomTextFormField extends StatelessWidget {
   const CustomTextFormField({
@@ -33,24 +30,9 @@ class CustomTextFormField extends StatelessWidget {
         expands: height != null,
         maxLines: height == null ? 1 : null,
         minLines: height == null ? 1 : null,
-        decoration: InputDecoration(
-          hintText: hintText,
-          hintStyle: const TextStyle(color: Color(0xff6D6D6D)),
-          labelText: labelText,
-          labelStyle: TextStyle(
-            color: AppColors.textColorAtDark,
-            fontSize: 16.sp,
-            fontWeight: FontWeight.w400,
-          ),
-          filled: true,
-          fillColor: AppColors.textFormFieldColor,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16),
-            borderSide: const BorderSide(color: Colors.grey, width: 2),
-          ),
-        ),
+        decoration: InputDecoration(hintText: hintText, labelText: labelText),
         cursorColor: Colors.white,
-        style: TextStyle(color: AppColors.textColorAtDark),
+        style: TextStyle(color: Theme.of(context).textTheme.labelMedium!.color),
       ),
     );
   }

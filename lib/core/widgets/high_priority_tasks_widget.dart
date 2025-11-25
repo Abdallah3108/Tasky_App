@@ -8,6 +8,7 @@ import 'package:taskyapp2/models/task_model.dart';
 
 import '../../features/high_priorty_tasks_view.dart';
 import '../utils/app_colors.dart';
+import 'custom_check_box.dart';
 
 class HighPriorityTasksWidget extends StatelessWidget {
   const HighPriorityTasksWidget({
@@ -29,7 +30,7 @@ class HighPriorityTasksWidget extends StatelessWidget {
 
       padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.textFormFieldColor,
+        color: Theme.of(context).colorScheme.primaryContainer,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
@@ -52,12 +53,8 @@ class HighPriorityTasksWidget extends StatelessWidget {
                 ...tasks.where((e) => e.isHighPriority).take(4).map((element) {
                   return Row(
                     children: [
-                      Checkbox(
+                      CustomCheckBox(
                         value: element.isDone,
-                        activeColor: AppColors.checkBoxColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4),
-                        ),
                         onChanged: (bool? value) async {
                           final index = tasks.indexWhere(
                             (e) => e.id == element.id,
@@ -75,19 +72,11 @@ class HighPriorityTasksWidget extends StatelessWidget {
                       Expanded(
                         child: Text(
                           element.taskName,
-                          style: TextStyle(
-                            color:
-                                element.isDone
-                                    ? AppColors.isDoneColor
-                                    : AppColors.textColorAtDark,
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w600,
-                            decoration:
-                                element.isDone
-                                    ? TextDecoration.lineThrough
-                                    : TextDecoration.none,
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                          style:
+                              element.isDone
+                                  ? Theme.of(context).textTheme.titleLarge
+                                  : Theme.of(context).textTheme.titleMedium,
+
                           maxLines: 1,
                         ),
                       ),
@@ -113,9 +102,9 @@ class HighPriorityTasksWidget extends StatelessWidget {
               width: 56.w,
               height: 56.h,
               decoration: BoxDecoration(
-                color: AppColors.textFormFieldColor,
+                color: Theme.of(context).colorScheme.primaryContainer,
                 shape: BoxShape.circle,
-                border: Border.all(color: Colors.grey, width: 2),
+                border: Border.all(color: Colors.grey, width: 1),
               ),
               child: SvgPicture.asset(
                 'assets/arrowupright.svg',

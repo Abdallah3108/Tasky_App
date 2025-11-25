@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:taskyapp2/core/widgets/custom_check_box.dart';
 
 import '../../models/task_model.dart';
 import '../utils/app_colors.dart';
@@ -43,22 +44,19 @@ class SliverTaskListWidget extends StatelessWidget {
                   width: double.infinity,
                   height: 56.h,
                   decoration: BoxDecoration(
-                    color: AppColors.textFormFieldColor,
+                    color: AppColors.textFormFieldColorDark,
                     borderRadius: BorderRadius.circular(20),
                     // border: Border.all(color: Colors.grey),
                   ),
                   child: Row(
                     children: [
-                      Checkbox(
+                      CustomCheckBox(
                         value: tasks[index].isDone,
-                        activeColor: AppColors.checkBoxColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4),
-                        ),
                         onChanged: (bool? value) async {
                           onTap(value, index);
                         },
                       ),
+
                       SizedBox(width: 8.w),
                       Expanded(
                         child: Column(
