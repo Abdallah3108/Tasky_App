@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../theme/theme_controller.dart';
 import '../utils/app_colors.dart';
 
 class AchievedTasksWidget extends StatelessWidget {
@@ -26,7 +27,12 @@ class AchievedTasksWidget extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.primaryContainer,
         borderRadius: BorderRadius.circular(20),
-        // border: Border.all(color: Colors.grey),
+        border: Border.all(
+          color:
+              ThemeController.isLight()
+                  ? Color(0xffe5ede9)
+                  : Colors.transparent,
+        ),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

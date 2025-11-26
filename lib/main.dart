@@ -3,21 +3,18 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taskyapp2/core/services/preferences_manager.dart';
 import 'package:taskyapp2/core/theme/dark_theme.dart';
 import 'package:taskyapp2/core/theme/light_theme.dart';
+import 'package:taskyapp2/core/theme/theme_controller.dart';
 
 import 'features/main_screen.dart';
 import 'features/welcome_screen.dart';
-
-//value notifier
-ValueNotifier<ThemeMode> themeNotifier = ValueNotifier(ThemeMode.light);
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await PreferencesManager().init();
   String? username = PreferencesManager().getString('username');
+  ThemeController().init();
 
-  //final pref = await SharedPreferences.getInstance();
-  // String? username = pref.getString('username');
   runApp(TaskyApp(username: username));
 }
 
@@ -34,13 +31,13 @@ class TaskyApp extends StatelessWidget {
       splitScreenMode: true,
       builder: (context, child) {
         return ValueListenableBuilder<ThemeMode>(
-          valueListenable: themeNotifier,
-          builder: (context, ThemeMode value, Widget? child) {
+          valueListenable: ThemeController.themeNotifier,
+          builder: (context, ThemeMode themeMode, Widget? child) {
             return MaterialApp(
               debugShowCheckedModeBanner: false,
               theme: lightTheme,
               darkTheme: darkTheme,
-              themeMode: value,
+              themeMode: themeMode,
               title: 'Tasky App',
               home: username == null ? WelcomeScreen() : MainScreen(),
             );

@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:taskyapp2/core/services/preferences_manager.dart';
+import 'package:taskyapp2/core/theme/theme_controller.dart';
 import 'package:taskyapp2/features/user_details_view.dart';
 import 'package:taskyapp2/features/welcome_screen.dart';
 
 import '../core/utils/app_colors.dart';
-import '../main.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -19,7 +19,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String? username;
   late String motivationQuote;
   bool isLoading = true;
-  bool isDarkMode = true;
 
   @override
   void initState() {
@@ -50,10 +49,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 padding: const EdgeInsets.only(top: 2.0),
                 child: Text(
                   'My Profile',
-                  style: TextStyle(
-                    fontSize: 20.sp,
-                    color: AppColors.textColorAtDark,
-                  ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.displaySmall!.copyWith(fontSize: 20.sp),
                 ),
               ),
               SizedBox(height: 16.h),
@@ -161,18 +159,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     fontWeight: FontWeight.w400,
                   ),
                 ),
-                trailing: Switch(
-                  value: isDarkMode,
-                  onChanged: (bool value) {
-                    /// TODO: Change Theme
-                    setState(() {
-                      isDarkMode = value;
-                      if (isDarkMode) {
-                        themeNotifier.value = ThemeMode.dark;
-                      } else {
-                        themeNotifier.value = ThemeMode.light;
-                      }
-                    });
+                trailing: ValueListenableBuilder(
+                  valueListenable: ThemeController.themeNotifier,
+                  builder: (BuildContext context, value, Widget? child) {
+                    return Switch(
+                      value: value == ThemeMode.dark,
+                      onChanged: (bool value) async {
+                        ThemeController.toggleTheme();
+                      },
+                    );
                   },
                 ),
               ),

@@ -176,10 +176,9 @@ class _HomeViewState extends State<HomeView> {
                     SizedBox(height: 20.h),
                     Text(
                       'My Tasks',
-                      style: TextStyle(
+                      style: Theme.of(context).textTheme.labelMedium!.copyWith(
                         fontSize: 20.sp,
                         fontWeight: FontWeight.w400,
-                        color: AppColors.textColorAtDark,
                       ),
                     ),
                     SizedBox(height: 16.h),

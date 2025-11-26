@@ -5,7 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taskyapp2/core/widgets/task_list_widget.dart';
 
 import '../core/services/preferences_manager.dart';
-import '../core/utils/app_colors.dart';
 import '../models/task_model.dart';
 
 class CompletedTasksView extends StatefulWidget {
@@ -56,7 +55,9 @@ class _CompletedTasksViewState extends State<CompletedTasksView> {
           padding: const EdgeInsets.all(18.0),
           child: Text(
             'Completed Tasks',
-            style: TextStyle(fontSize: 20.sp, color: AppColors.textColorAtDark),
+            style: Theme.of(
+              context,
+            ).textTheme.displaySmall!.copyWith(fontSize: 20.sp),
           ),
         ),
         Expanded(

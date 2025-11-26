@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../core/services/preferences_manager.dart';
-import '../core/utils/app_colors.dart';
 import '../core/widgets/task_list_widget.dart';
 import '../models/task_model.dart';
 
@@ -55,7 +54,9 @@ class _ToDoTasksScreenState extends State<ToDoTasksScreen> {
           padding: const EdgeInsets.all(18.0),
           child: Text(
             'To Do Tasks',
-            style: TextStyle(fontSize: 20.sp, color: AppColors.textColorAtDark),
+            style: Theme.of(
+              context,
+            ).textTheme.displaySmall!.copyWith(fontSize: 20.sp),
           ),
         ),
         Expanded(

@@ -7,6 +7,7 @@ import 'package:taskyapp2/core/services/preferences_manager.dart';
 import 'package:taskyapp2/models/task_model.dart';
 
 import '../../features/high_priorty_tasks_view.dart';
+import '../theme/theme_controller.dart';
 import '../utils/app_colors.dart';
 import 'custom_check_box.dart';
 
@@ -32,6 +33,12 @@ class HighPriorityTasksWidget extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.primaryContainer,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color:
+              ThemeController.isLight()
+                  ? Color(0xffe5ede9)
+                  : Colors.transparent,
+        ),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -74,8 +81,10 @@ class HighPriorityTasksWidget extends StatelessWidget {
                           element.taskName,
                           style:
                               element.isDone
-                                  ? Theme.of(context).textTheme.titleLarge
-                                  : Theme.of(context).textTheme.titleMedium,
+                                  ? Theme.of(context).textTheme.titleLarge!
+                                      .copyWith(fontWeight: FontWeight.w600)
+                                  : Theme.of(context).textTheme.titleMedium!
+                                      .copyWith(fontWeight: FontWeight.w600),
 
                           maxLines: 1,
                         ),
@@ -110,6 +119,12 @@ class HighPriorityTasksWidget extends StatelessWidget {
                 'assets/arrowupright.svg',
                 width: 24.w,
                 height: 24.h,
+                colorFilter: ColorFilter.mode(
+                  ThemeController.isLight()
+                      ? Color(0xff3A4640)
+                      : Color(0xffC6C6C6),
+                  BlendMode.srcIn,
+                ),
               ),
             ),
           ),
