@@ -81,7 +81,7 @@ class TaskItemWidget extends StatelessWidget {
               color:
                   model.isDone
                       ? AppColors.isDoneColor
-                      : AppColors.textColorAtDark,
+                      : Theme.of(context).iconTheme.color,
             ),
             onPressed: () {},
           ),

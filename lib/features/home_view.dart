@@ -2,9 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:taskyapp2/core/services/preferences_manager.dart';
+import 'package:taskyapp2/core/widgets/custom_svg_picture.dart';
 import 'package:taskyapp2/core/widgets/sliver_task_list_widget.dart';
 
 import '../core/utils/app_colors.dart';
@@ -42,9 +41,7 @@ class _HomeViewState extends State<HomeView> {
   }
 
   void _loadTasks() async {
-    final pref = await SharedPreferences.getInstance();
-
-    final finalTask = pref.getString('tasks');
+    final finalTask = PreferencesManager().getString('tasks');
     if (finalTask != null) {
       final decoded = jsonDecode(finalTask);
 
@@ -74,7 +71,7 @@ class _HomeViewState extends State<HomeView> {
       tasks[index!].isDone = value ?? false;
       _calculatePercentage();
     });
-    final pref = await SharedPreferences.getInstance();
+
     final updatedTask = tasks.map((e) => e.toJson()).toList();
     PreferencesManager().setString('tasks', jsonEncode(updatedTask));
   }
@@ -87,10 +84,7 @@ class _HomeViewState extends State<HomeView> {
         height: 40.h,
         child: FloatingActionButton.extended(
           backgroundColor: AppColors.primary,
-          label: Text(
-            'Add New Task',
-            style: TextStyle(color: AppColors.textColorAtDark),
-          ),
+          label: Text('Add New Task', style: TextStyle(fontSize: 14.sp)),
           icon: Icon(Icons.add, color: AppColors.textColorAtDark),
           onPressed: () {
             Navigator.push(
@@ -151,7 +145,10 @@ class _HomeViewState extends State<HomeView> {
                           'almost done ! ',
                           style: Theme.of(context).textTheme.displayMedium!,
                         ),
-                        SvgPicture.asset('assets/hand.svg'),
+                        CustomSvgPicture(
+                          path: 'assets/hand.svg',
+                          withColorFilter: false,
+                        ),
                       ],
                     ),
                     SizedBox(height: 16.h),

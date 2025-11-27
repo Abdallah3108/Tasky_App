@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taskyapp2/core/widgets/task_item_widget.dart';
 
 import '../../models/task_model.dart';
-import '../utils/app_colors.dart';
 
 class TaskListWidget extends StatelessWidget {
   const TaskListWidget({
@@ -22,8 +21,8 @@ class TaskListWidget extends StatelessWidget {
     return tasks.isEmpty
         ? Center(
           child: Text(
-            emptyMessage,
-            style: TextStyle(fontSize: 20.sp, color: AppColors.textColorAtDark),
+            emptyMessage ?? "No Tasks",
+            style: Theme.of(context).textTheme.displaySmall,
           ),
         )
         : ListView.builder(

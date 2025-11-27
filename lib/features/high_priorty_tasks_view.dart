@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taskyapp2/core/services/preferences_manager.dart';
 
-import '../core/utils/app_colors.dart';
 import '../core/widgets/task_list_widget.dart';
 import '../models/task_model.dart';
 
@@ -57,7 +56,9 @@ class _HighPriorityTasksViewState extends State<HighPriorityTasksView> {
         automaticallyImplyLeading: false,
         title: Text(
           'High Priority Tasks',
-          style: TextStyle(fontSize: 20.sp, color: AppColors.textColorAtDark),
+          style: Theme.of(
+            context,
+          ).textTheme.labelMedium!.copyWith(fontSize: 20.sp),
         ),
       ),
       body: Padding(

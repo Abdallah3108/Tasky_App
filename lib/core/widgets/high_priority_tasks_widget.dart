@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:taskyapp2/core/services/preferences_manager.dart';
+import 'package:taskyapp2/core/widgets/custom_svg_picture.dart';
 import 'package:taskyapp2/models/task_model.dart';
 
 import '../../features/high_priorty_tasks_view.dart';
@@ -115,16 +115,11 @@ class HighPriorityTasksWidget extends StatelessWidget {
                 shape: BoxShape.circle,
                 border: Border.all(color: Colors.grey, width: 1),
               ),
-              child: SvgPicture.asset(
-                'assets/arrowupright.svg',
+              child: CustomSvgPicture(
+                path: 'assets/arrowupright.svg',
+                withColorFilter: true,
                 width: 24.w,
                 height: 24.h,
-                colorFilter: ColorFilter.mode(
-                  ThemeController.isLight()
-                      ? Color(0xff3A4640)
-                      : Color(0xffC6C6C6),
-                  BlendMode.srcIn,
-                ),
               ),
             ),
           ),

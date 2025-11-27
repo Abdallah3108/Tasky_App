@@ -31,7 +31,6 @@ class CustomTextFormField extends StatelessWidget {
         maxLines: height == null ? 1 : null,
         minLines: height == null ? 1 : null,
         decoration: InputDecoration(hintText: hintText, labelText: labelText),
-        cursorColor: Colors.white,
         style: TextStyle(color: Theme.of(context).textTheme.labelMedium!.color),
       ),
     );

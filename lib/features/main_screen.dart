@@ -68,62 +68,40 @@ class _MainScreenState extends State<MainScreen> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: (i) => setState(() => _currentIndex = i),
-        backgroundColor: AppColors.backgroundDark,
-        unselectedItemColor: Colors.white,
-        selectedItemColor: AppColors.primary,
-        type: BottomNavigationBarType.fixed,
+
         items: [
           BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              "assets/homeicon.svg",
-              colorFilter: ColorFilter.mode(
-                _currentIndex == 0
-                    ? AppColors.primary
-                    : AppColors.textColorAtDark,
-                BlendMode.srcIn,
-              ),
-            ),
+            icon: _buildSvgPicture('assets/homeicon.svg', 0),
             label: "Home",
           ),
           BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              "assets/todoicon.svg",
-              colorFilter: ColorFilter.mode(
-                _currentIndex == 1
-                    ? AppColors.primary
-                    : AppColors.textColorAtDark,
-                BlendMode.srcIn,
-              ),
-            ),
+            icon: _buildSvgPicture('assets/todoicon.svg', 1),
+
             label: "To Do",
           ),
           BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              "assets/completedtasksicon.svg",
-              colorFilter: ColorFilter.mode(
-                _currentIndex == 2
-                    ? AppColors.primary
-                    : AppColors.textColorAtDark,
-                BlendMode.srcIn,
-              ),
-            ),
+            icon: _buildSvgPicture('assets/completedtasksicon.svg', 2),
+
             label: "Completed",
           ),
           BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              "assets/profileicon.svg",
-              colorFilter: ColorFilter.mode(
-                _currentIndex == 3
-                    ? AppColors.primary
-                    : AppColors.textColorAtDark,
-                BlendMode.srcIn,
-              ),
-            ),
+            icon: _buildSvgPicture('assets/profileicon.svg', 3),
+
             label: "Profile",
           ),
         ],
       ),
       body: SafeArea(child: _screens[_currentIndex]),
+    );
+  }
+
+  SvgPicture _buildSvgPicture(String path, int index) {
+    return SvgPicture.asset(
+      path,
+      colorFilter: ColorFilter.mode(
+        _currentIndex == index ? AppColors.primary : Color(0xffC6C6C6),
+        BlendMode.srcIn,
+      ),
     );
   }
 }

@@ -27,18 +27,7 @@ class _AddTaskViewState extends State<AddTaskView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundDark,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Text('New Task'),
-        // leading: IconButton(
-        //   icon: Icon(Icons.arrow_back),
-        //   color: AppColors.textColorAtDark,
-        //   onPressed: () {
-        //     Navigator.pop(context);
-        //   },
-        // ),
-      ),
+      appBar: AppBar(title: Text('New Task')),
       body: Padding(
         padding: const EdgeInsets.all(16).r,
         child: Form(
@@ -53,11 +42,7 @@ class _AddTaskViewState extends State<AddTaskView> {
                     children: [
                       Text(
                         'Task Name',
-                        style: TextStyle(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.textColorAtDark,
-                        ),
+                        style: Theme.of(context).textTheme.labelMedium,
                       ),
                       SizedBox(height: 8.h),
                       CustomTextFormField(
@@ -73,22 +58,12 @@ class _AddTaskViewState extends State<AddTaskView> {
                       SizedBox(height: 20.h),
                       Text(
                         'Task Description',
-                        style: TextStyle(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.textColorAtDark,
-                        ),
+                        style: Theme.of(context).textTheme.labelMedium,
                       ),
                       SizedBox(height: 8.h),
                       CustomTextFormField(
                         controller: taskDescriptionController,
 
-                        // validator: (value) {
-                        //   if (value == null || value.trim().isEmpty) {
-                        //     return 'Please Enter Your Task Description';
-                        //   }
-                        //   return null;
-                        // },
                         height: 160.h,
                         hintText:
                             'Finish onboarding UI and hand off to devs by Thursday.',
@@ -99,11 +74,7 @@ class _AddTaskViewState extends State<AddTaskView> {
                         children: [
                           Text(
                             "High Priority",
-                            style: TextStyle(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.textColorAtDark,
-                            ),
+                            style: Theme.of(context).textTheme.labelMedium,
                           ),
                           const Spacer(),
                           SizedBox(

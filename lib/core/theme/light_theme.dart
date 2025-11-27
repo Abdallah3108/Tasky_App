@@ -44,6 +44,9 @@ ThemeData lightTheme = ThemeData(
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ButtonStyle(
       backgroundColor: WidgetStateProperty.all(AppColors.primary),
+      textStyle: WidgetStateProperty.all(
+        TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
+      ),
     ),
   ),
   textTheme: TextTheme(
@@ -109,5 +112,29 @@ ThemeData lightTheme = ThemeData(
   ),
   checkboxTheme: CheckboxThemeData(
     side: BorderSide(color: Color(0xffD1DAD6), width: 2),
+  ),
+
+  iconButtonTheme: IconButtonThemeData(
+    style: ButtonStyle(
+      iconColor: WidgetStateProperty.resolveWith((states) {
+        return AppColors.textColorAtLight; // للـ Light Mode
+      }),
+    ),
+  ),
+  listTileTheme: ListTileThemeData(
+    titleTextStyle: TextStyle(
+      color: AppColors.textColorAtLight,
+      fontSize: 16.sp,
+      fontWeight: FontWeight.w400,
+    ),
+  ),
+  iconTheme: IconThemeData(color: Color(0xff3A4640)),
+  dividerTheme: DividerThemeData(color: Color(0xffD1DAD6), thickness: 1),
+  textSelectionTheme: TextSelectionThemeData(cursorColor: Colors.black),
+  bottomNavigationBarTheme: BottomNavigationBarThemeData(
+    backgroundColor: Color(0xffF6F7F9),
+    unselectedItemColor: Color(0xff3A4640),
+    selectedItemColor: Color(0xff14A662),
+    type: BottomNavigationBarType.fixed,
   ),
 );

@@ -17,6 +17,7 @@ ThemeData darkTheme = ThemeData(
       fontSize: 20.sp,
       fontWeight: FontWeight.w400,
     ),
+    centerTitle: true,
     iconTheme: IconThemeData(color: AppColors.textColorAtDark),
   ),
   switchTheme: SwitchThemeData(
@@ -43,8 +44,16 @@ ThemeData darkTheme = ThemeData(
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ButtonStyle(
       backgroundColor: WidgetStateProperty.all(AppColors.primary),
+      textStyle: WidgetStateProperty.all(
+        TextStyle(
+          fontSize: 14.sp,
+          fontWeight: FontWeight.w500,
+          color: AppColors.textColorAtDark,
+        ),
+      ),
     ),
   ),
+
   textTheme: TextTheme(
     displaySmall: TextStyle(
       color: AppColors.textColorAtDark,
@@ -107,5 +116,28 @@ ThemeData darkTheme = ThemeData(
   ),
   checkboxTheme: CheckboxThemeData(
     side: BorderSide(color: Color(0xff6E6E6E), width: 2),
+  ),
+  iconButtonTheme: IconButtonThemeData(
+    style: ButtonStyle(
+      iconColor: WidgetStateProperty.resolveWith((states) {
+        return AppColors.textColorAtDark; // للـ Light Mode
+      }),
+    ),
+  ),
+  listTileTheme: ListTileThemeData(
+    titleTextStyle: TextStyle(
+      color: AppColors.textColorAtDark,
+      fontSize: 16.sp,
+      fontWeight: FontWeight.w400,
+    ),
+  ),
+  iconTheme: IconThemeData(color: Color(0xffC6C6C6)),
+  dividerTheme: DividerThemeData(color: Color(0xff6E6E6E), thickness: 1),
+  textSelectionTheme: TextSelectionThemeData(cursorColor: Colors.white),
+  bottomNavigationBarTheme: BottomNavigationBarThemeData(
+    backgroundColor: AppColors.backgroundDark,
+    unselectedItemColor: Colors.white,
+    selectedItemColor: AppColors.primary,
+    type: BottomNavigationBarType.fixed,
   ),
 );

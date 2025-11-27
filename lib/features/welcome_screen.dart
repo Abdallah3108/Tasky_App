@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:taskyapp2/core/services/preferences_manager.dart';
+import 'package:taskyapp2/core/widgets/custom_svg_picture.dart';
 import 'package:taskyapp2/core/widgets/custom_text_form_field.dart';
 
 import '../core/widgets/custom_elevated_button.dart';
@@ -30,11 +30,13 @@ class WelcomeScreen extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SvgPicture.asset(
-                          'assets/logo.svg',
+                        CustomSvgPicture(
+                          path: 'assets/logo.svg',
+                          withColorFilter: false,
                           width: 42.w,
                           height: 42.h,
                         ),
+
                         SizedBox(width: 16.w),
                         Text(
                           'Tasky',
@@ -51,8 +53,9 @@ class WelcomeScreen extends StatelessWidget {
                         'Welcome To Tasky ',
                         style: Theme.of(context).textTheme.displaySmall,
                       ),
-                      SvgPicture.asset(
-                        'assets/hand.svg',
+                      CustomSvgPicture(
+                        path: 'assets/hand.svg',
+                        withColorFilter: false,
                         width: 28.w,
                         height: 28.h,
                       ),
@@ -66,11 +69,13 @@ class WelcomeScreen extends StatelessWidget {
                     ).textTheme.displaySmall!.copyWith(fontSize: 16.sp),
                   ),
                   SizedBox(height: 24.h),
-                  SvgPicture.asset(
-                    'assets/pana.svg',
+                  CustomSvgPicture(
+                    path: 'assets/pana.svg',
+                    withColorFilter: false,
                     width: 215.w,
                     height: 200.h,
                   ),
+
                   SizedBox(height: 28.h),
                   CustomTextFormField(
                     validator: (String? value) {

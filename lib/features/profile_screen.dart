@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:taskyapp2/core/services/preferences_manager.dart';
 import 'package:taskyapp2/core/theme/theme_controller.dart';
+import 'package:taskyapp2/core/widgets/custom_svg_picture.dart';
 import 'package:taskyapp2/features/user_details_view.dart';
 import 'package:taskyapp2/features/welcome_screen.dart';
-
-import '../core/utils/app_colors.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -74,12 +72,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               width: 45.w,
                               height: 45.h,
                               decoration: BoxDecoration(
-                                color: AppColors.backgroundDark,
+                                color:
+                                    Theme.of(
+                                      context,
+                                    ).colorScheme.primaryContainer,
                                 borderRadius: BorderRadius.circular(100),
                               ),
                               child: Icon(
                                 Icons.camera_alt,
-                                color: Colors.white,
+                                // color: Colors.white,
                               ),
                             ),
                           ),
@@ -90,31 +91,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   SizedBox(height: 8.h),
                   Text(
                     username ?? "",
-                    style: TextStyle(
-                      fontSize: 20.sp,
-                      color: AppColors.textColorAtDark,
-                    ),
+                    style: Theme.of(
+                      context,
+                    ).textTheme.labelMedium!.copyWith(fontSize: 20.sp),
                   ),
                   SizedBox(height: 4.h),
                   Text(
                     motivationQuote ?? "One task at a time. One step closer.",
-                    style: TextStyle(
-                      fontSize: 16.sp,
-
-                      color: Colors.grey,
-                      fontWeight: FontWeight.w400,
-                    ),
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
                 ],
               ),
               SizedBox(height: 24.h),
               Text(
                 'Profile Info',
-                style: TextStyle(
-                  fontSize: 20.sp,
-                  color: AppColors.textColorAtDark,
-                  fontWeight: FontWeight.w400,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.labelMedium!.copyWith(fontSize: 20.sp),
               ),
               SizedBox(height: 8.h),
 
@@ -136,29 +129,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   }
                 },
                 contentPadding: EdgeInsets.zero,
-                leading: SvgPicture.asset('assets/personicon.svg'),
-                title: Text(
-                  'User Details',
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    color: AppColors.textColorAtDark,
-                    fontWeight: FontWeight.w400,
-                  ),
+                leading: CustomSvgPicture(
+                  path: 'assets/personicon.svg',
+                  withColorFilter: true,
                 ),
-                trailing: SvgPicture.asset('assets/arrowright.svg'),
+
+                title: Text('User Details'),
+                trailing: CustomSvgPicture(
+                  path: 'assets/arrowright.svg',
+                  withColorFilter: true,
+                ),
               ),
-              Divider(color: AppColors.secondaryTextColorAtDark, thickness: 1),
+              Divider(),
               ListTile(
                 contentPadding: EdgeInsets.zero,
-                leading: SvgPicture.asset('assets/darkmodeicon.svg'),
-                title: Text(
-                  'Dark Mode',
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    color: AppColors.textColorAtDark,
-                    fontWeight: FontWeight.w400,
-                  ),
+                leading: CustomSvgPicture(
+                  path: 'assets/darkmodeicon.svg',
+                  withColorFilter: true,
                 ),
+
+                title: Text('Dark Mode'),
                 trailing: ValueListenableBuilder(
                   valueListenable: ThemeController.themeNotifier,
                   builder: (BuildContext context, value, Widget? child) {
@@ -171,7 +161,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   },
                 ),
               ),
-              Divider(color: AppColors.secondaryTextColorAtDark, thickness: 1),
+              Divider(),
 
               ListTile(
                 onTap: () async {
@@ -190,16 +180,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   );
                 },
                 contentPadding: EdgeInsets.zero,
-                leading: SvgPicture.asset('assets/logout.svg'),
-                title: Text(
-                  'Log Out',
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    color: AppColors.textColorAtDark,
-                    fontWeight: FontWeight.w400,
-                  ),
+                leading: CustomSvgPicture(
+                  path: 'assets/logout.svg',
+                  withColorFilter: true,
                 ),
-                trailing: SvgPicture.asset('assets/arrowright.svg'),
+
+                title: Text('Log Out'),
+                trailing: CustomSvgPicture(
+                  path: 'assets/arrowright.svg',
+                  withColorFilter: true,
+                ),
               ),
             ],
           ),
