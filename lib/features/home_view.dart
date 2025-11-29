@@ -76,6 +76,16 @@ class _HomeViewState extends State<HomeView> {
     PreferencesManager().setString('tasks', jsonEncode(updatedTask));
   }
 
+  _deleteTask(int? id) async {
+    if (id == null) return;
+    setState(() {
+      tasks.removeWhere((task) => task.id == id);
+      _calculatePercentage();
+    });
+    final updatedTask = tasks.map((e) => e.toJson()).toList();
+    PreferencesManager().setString('tasks', jsonEncode(updatedTask));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,7 +94,7 @@ class _HomeViewState extends State<HomeView> {
         height: 40.h,
         child: FloatingActionButton.extended(
           backgroundColor: AppColors.primary,
-          label: Text('Add New Task', style: TextStyle(fontSize: 14.sp)),
+          label: Text('Add New Task'),
           icon: Icon(Icons.add, color: AppColors.textColorAtDark),
           onPressed: () {
             Navigator.push(
@@ -187,6 +197,9 @@ class _HomeViewState extends State<HomeView> {
                 tasks: tasks,
                 onTap: (bool? value, int? index) async {
                   _doneTask(value, index);
+                },
+                onDelete: (int? id) {
+                  _deleteTask(id);
                 },
               ),
             ],

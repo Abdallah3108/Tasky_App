@@ -49,11 +49,38 @@ class _HighPriorityTasksViewState extends State<HighPriorityTasksView> {
     }
   }
 
+  _deleteTask(int? id) async {
+    List<TaskModel> tasks = [];
+    if (id == null) return;
+    final finalTask = await PreferencesManager().getString('tasks');
+    if (finalTask != null) {
+      final decoded = jsonDecode(finalTask);
+
+      List<dynamic> taskAfterDecode = [];
+
+      if (decoded is List) {
+        taskAfterDecode = decoded;
+      } else if (decoded is Map) {
+        taskAfterDecode = [decoded];
+      }
+      tasks =
+          taskAfterDecode
+              .map((element) => TaskModel.fromJson(element))
+              .toList();
+      tasks.removeWhere((e) => e.id == id);
+
+      setState(() {
+        highPriorityTasks.removeWhere((task) => task.id == id);
+      });
+      final updatedTask = tasks.map((e) => e.toJson()).toList();
+      PreferencesManager().setString('tasks', jsonEncode(updatedTask));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
         title: Text(
           'High Priority Tasks',
           style: Theme.of(
@@ -85,6 +112,9 @@ class _HighPriorityTasksViewState extends State<HighPriorityTasksView> {
 
               _loadTasks();
             }
+          },
+          onDelete: (int? id) {
+            _deleteTask(id);
           },
         ),
       ),

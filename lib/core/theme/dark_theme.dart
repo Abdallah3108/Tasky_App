@@ -53,6 +53,19 @@ ThemeData darkTheme = ThemeData(
       ),
     ),
   ),
+  floatingActionButtonTheme: FloatingActionButtonThemeData(
+    backgroundColor: AppColors.primary,
+    foregroundColor: AppColors.textColorAtDark,
+    splashColor: AppColors.primary,
+    focusColor: AppColors.primary,
+    hoverColor: AppColors.primary,
+    extendedTextStyle: TextStyle(
+      fontSize: 14.sp,
+      fontWeight: FontWeight.w500,
+      color: AppColors.textColorAtDark,
+    ),
+    elevation: 4,
+  ),
 
   textTheme: TextTheme(
     displaySmall: TextStyle(
@@ -139,5 +152,21 @@ ThemeData darkTheme = ThemeData(
     unselectedItemColor: Colors.white,
     selectedItemColor: AppColors.primary,
     type: BottomNavigationBarType.fixed,
+  ),
+  popupMenuTheme: PopupMenuThemeData(
+    color: AppColors.backgroundDark,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(16),
+      side: BorderSide(color: AppColors.primary, width: 1),
+    ),
+    elevation: 4,
+    shadowColor: AppColors.primary,
+    labelTextStyle: WidgetStateProperty.all(
+      TextStyle(
+        color: AppColors.textColorAtDark,
+        fontSize: 20.sp,
+        fontWeight: FontWeight.w400,
+      ),
+    ),
   ),
 );

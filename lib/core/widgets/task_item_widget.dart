@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taskyapp2/core/theme/theme_controller.dart';
 import 'package:taskyapp2/models/task_model.dart';
 
+import '../enums/task_item_actions_enum.dart';
 import '../utils/app_colors.dart';
 import 'custom_check_box.dart';
 
@@ -11,10 +12,12 @@ class TaskItemWidget extends StatelessWidget {
     super.key,
     required this.model,
     required this.onChanged,
+    required this.onDelete,
   });
 
   final TaskModel model;
   final Function(bool?) onChanged;
+  final Function(int) onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +78,7 @@ class TaskItemWidget extends StatelessWidget {
               ],
             ),
           ),
-          IconButton(
+          PopupMenuButton(
             icon: Icon(
               Icons.more_vert,
               color:
@@ -83,7 +86,26 @@ class TaskItemWidget extends StatelessWidget {
                       ? AppColors.isDoneColor
                       : Theme.of(context).iconTheme.color,
             ),
-            onPressed: () {},
+            onSelected: (value) {
+              switch (value) {
+                case TaskItemActionsEnum.markTaskAsDone:
+                  onChanged(!model.isDone);
+
+                case TaskItemActionsEnum.edit:
+                  // TODO: Handle this case.
+                  throw UnimplementedError();
+                case TaskItemActionsEnum.delete:
+                  onDelete(model.id);
+              }
+            },
+            itemBuilder:
+                (BuildContext context) =>
+                    TaskItemActionsEnum.values.map((e) {
+                      return PopupMenuItem<TaskItemActionsEnum>(
+                        value: e,
+                        child: Text(e.name),
+                      );
+                    }).toList(),
           ),
         ],
       ),

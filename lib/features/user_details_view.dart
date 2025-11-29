@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taskyapp2/core/services/preferences_manager.dart';
 
-import '../core/utils/app_colors.dart';
 import '../core/widgets/custom_elevated_button.dart';
 import '../core/widgets/custom_text_form_field.dart';
 
@@ -54,14 +53,7 @@ class _UserDetailsViewState extends State<UserDetailsView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'User Name',
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.textColorAtDark,
-                ),
-              ),
+              Text('User Name', style: Theme.of(context).textTheme.labelMedium),
               SizedBox(height: 8.h),
               CustomTextFormField(
                 hintText: 'Abdallah Ashraf',
@@ -77,11 +69,7 @@ class _UserDetailsViewState extends State<UserDetailsView> {
               SizedBox(height: 20.h),
               Text(
                 'Motivation Quote',
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.textColorAtDark,
-                ),
+                style: Theme.of(context).textTheme.labelMedium,
               ),
               SizedBox(height: 8.h),
               CustomTextFormField(
