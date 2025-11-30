@@ -1,11 +1,16 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:taskyapp2/core/services/preferences_manager.dart';
 import 'package:taskyapp2/core/theme/theme_controller.dart';
 import 'package:taskyapp2/models/task_model.dart';
 
 import '../enums/task_item_actions_enum.dart';
 import '../utils/app_colors.dart';
 import 'custom_check_box.dart';
+import 'custom_elevated_button.dart';
+import 'custom_text_form_field.dart';
 
 class TaskItemWidget extends StatelessWidget {
   const TaskItemWidget({
@@ -13,11 +18,13 @@ class TaskItemWidget extends StatelessWidget {
     required this.model,
     required this.onChanged,
     required this.onDelete,
+    required this.onEdit,
   });
 
   final TaskModel model;
   final Function(bool?) onChanged;
   final Function(int) onDelete;
+  final Function onEdit;
 
   @override
   Widget build(BuildContext context) {
@@ -86,16 +93,19 @@ class TaskItemWidget extends StatelessWidget {
                       ? AppColors.isDoneColor
                       : Theme.of(context).iconTheme.color,
             ),
-            onSelected: (value) {
+            onSelected: (value) async {
               switch (value) {
                 case TaskItemActionsEnum.markTaskAsDone:
                   onChanged(!model.isDone);
 
                 case TaskItemActionsEnum.edit:
-                  // TODO: Handle this case.
-                  throw UnimplementedError();
+                  final result = await _ShowBottomSheet(context, model);
+                  if (result == true) {
+                    onEdit();
+                  }
+
                 case TaskItemActionsEnum.delete:
-                  onDelete(model.id);
+                  await _showAlertDialog(context);
               }
             },
             itemBuilder:
@@ -109,6 +119,208 @@ class TaskItemWidget extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Future<bool?> _ShowBottomSheet(BuildContext context, TaskModel model) {
+    TextEditingController taskNameController = TextEditingController(
+      text: model.taskName,
+    );
+    TextEditingController taskDescriptionController = TextEditingController(
+      text: model.taskDescription,
+    );
+    GlobalKey<FormState> key = GlobalKey<FormState>();
+    bool isHighPriority = model.isHighPriority;
+
+    return showModalBottomSheet<bool>(
+      context: context,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (
+            BuildContext context,
+            void Function(void Function()) setState,
+          ) {
+            return Padding(
+              padding: const EdgeInsets.all(16).r,
+              child: Form(
+                key: key,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: 16.h),
+                            Text(
+                              'Task Name',
+                              style: Theme.of(context).textTheme.labelMedium,
+                            ),
+                            SizedBox(height: 8.h),
+                            CustomTextFormField(
+                              controller: taskNameController,
+                              validator: (value) {
+                                if (value == null || value.trim().isEmpty) {
+                                  return 'Please Enter Your Task Name';
+                                }
+                                return null;
+                              },
+                              hintText: 'Finish UI design for login screen',
+                            ),
+                            SizedBox(height: 20.h),
+                            Text(
+                              'Task Description',
+                              style: Theme.of(context).textTheme.labelMedium,
+                            ),
+                            SizedBox(height: 8.h),
+                            CustomTextFormField(
+                              controller: taskDescriptionController,
+
+                              height: 160.h,
+                              hintText:
+                                  'Finish onboarding UI and hand off to devs by Thursday.',
+                            ),
+                            SizedBox(height: 20.h),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "High Priority",
+                                  style:
+                                      Theme.of(context).textTheme.labelMedium,
+                                ),
+                                const Spacer(),
+                                SizedBox(
+                                  width: 52.sp,
+                                  height: 32.sp,
+                                  child: Switch(
+                                    value: isHighPriority,
+                                    onChanged: (bool value) {
+                                      setState(() {
+                                        isHighPriority = value;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    CustomElevatedButton(
+                      text: 'Edit Task',
+                      icon: Icon(Icons.edit, color: AppColors.textColorAtDark),
+                      onPressed: () async {
+                        if (key.currentState?.validate() ?? false) {
+                          final taskJson = PreferencesManager().getString(
+                            'tasks',
+                          );
+                          List<dynamic> listTasks = [];
+                          if (taskJson != null) {
+                            listTasks = jsonDecode(taskJson);
+                          }
+                          TaskModel newModel = TaskModel(
+                            id: model.id,
+                            taskName: taskNameController.text,
+                            taskDescription: taskDescriptionController.text,
+                            isHighPriority: isHighPriority,
+                            isDone: model.isDone,
+                          );
+                          final item = listTasks.firstWhere(
+                            (e) => e['id'] == model.id,
+                          );
+                          final int index = listTasks.indexOf(item);
+                          listTasks[index] = newModel.toJson();
+                          final taskEncode = jsonEncode(listTasks);
+                          await PreferencesManager().setString(
+                            'tasks',
+                            taskEncode,
+                          );
+                          Navigator.of(context).pop(true);
+                        }
+                        // if (_key.currentState!.validate()) {
+                        //   // save data at {SharedPrefrence}
+                        //   final taskJson = PreferencesManager()
+                        //       .getString('tasks');
+                        //   List<dynamic> listTasks =
+                        //       []; //--> List<Map<String,dynamic>>
+                        //   if (taskJson != null) {
+                        //     listTasks = jsonDecode(taskJson);
+                        //   }
+                        //
+                        //   TaskModel model = TaskModel(
+                        //     id: listTasks.length + 1,
+                        //     taskName: taskNameController.text,
+                        //     taskDescription:
+                        //         taskDescriptionController.text,
+                        //     isHighPriority: isHighPriority,
+                        //   );
+                        //
+                        //   listTasks.add(model.toJson());
+                        //
+                        //   final taskEncode = jsonEncode(listTasks);
+                        //   await PreferencesManager().setString(
+                        //     'tasks',
+                        //     taskEncode,
+                        //   );
+                        //
+                        //   // pref.setString('tasks', jsonEncode(listTasks));
+                        //
+                        //   final finalTask = PreferencesManager()
+                        //       .getString('tasks');
+                        //   final taskAfterDecode =
+                        //       jsonDecode(finalTask ?? "[]")
+                        //           as List<dynamic>;
+                        //
+                        //   Navigator.pushReplacement(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //       builder: (BuildContext context) {
+                        //         return MainScreen();
+                        //       },
+                        //     ),
+                        //   );
+                        // }
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Future<dynamic> _showAlertDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Delete Task"),
+          content: Text('Are you sure,You want to delete this task'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                onDelete(model.id);
+                Navigator.pop(context);
+              },
+              style: TextButton.styleFrom(foregroundColor: Colors.red),
+              child: Text('Delete'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

@@ -10,7 +10,7 @@ import 'features/welcome_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  await ScreenUtil.ensureScreenSize();
   await PreferencesManager().init();
   String? username = PreferencesManager().getString('username');
   ThemeController().init();

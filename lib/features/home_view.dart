@@ -201,6 +201,9 @@ class _HomeViewState extends State<HomeView> {
                 onDelete: (int? id) {
                   _deleteTask(id);
                 },
+                onEdit: () {
+                  _loadTasks();
+                },
               ),
             ],
           ),

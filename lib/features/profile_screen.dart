@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:taskyapp2/core/services/preferences_manager.dart';
 import 'package:taskyapp2/core/theme/theme_controller.dart';
 import 'package:taskyapp2/core/widgets/custom_svg_picture.dart';
@@ -17,6 +20,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String? username;
   late String motivationQuote;
   bool isLoading = true;
+  File? _selectedImage;
 
   @override
   void initState() {
@@ -59,7 +63,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: Stack(
                       children: [
                         CircleAvatar(
-                          backgroundImage: AssetImage('assets/person.png'),
+                          backgroundImage:
+                              _selectedImage == null
+                                  ? AssetImage('assets/person.png')
+                                  : FileImage(_selectedImage!),
                           backgroundColor: Colors.transparent,
                           radius: 55,
                         ),
@@ -67,7 +74,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           bottom: 0,
                           right: 0,
                           child: GestureDetector(
-                            onTap: () {},
+                            onTap: () async {
+                              XFile? image = await ImagePicker().pickImage(
+                                source: ImageSource.gallery,
+                              );
+                              if (image != null) {
+                                setState(() {
+                                  _selectedImage = File(image.path);
+                                });
+                              }
+                            },
                             child: Container(
                               width: 45.w,
                               height: 45.h,

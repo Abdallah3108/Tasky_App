@@ -120,6 +120,9 @@ class _CompletedTasksViewState extends State<CompletedTasksView> {
               onDelete: (int? id) {
                 _deleteTask(id);
               },
+              onEdit: () {
+                _loadTasks();
+              },
             ),
           ),
         ),

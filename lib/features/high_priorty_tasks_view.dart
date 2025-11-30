@@ -116,6 +116,9 @@ class _HighPriorityTasksViewState extends State<HighPriorityTasksView> {
           onDelete: (int? id) {
             _deleteTask(id);
           },
+          onEdit: () {
+            _loadTasks();
+          },
         ),
       ),
     );

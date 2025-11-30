@@ -11,11 +11,13 @@ class TaskListWidget extends StatelessWidget {
     required this.onTap,
     required this.emptyMessage,
     required this.onDelete,
+    required this.onEdit,
   });
 
   final List<TaskModel> tasks;
   final Function(bool?, int?) onTap;
   final Function(int?) onDelete;
+  final Function onEdit;
   final String emptyMessage;
 
   @override
@@ -41,6 +43,7 @@ class TaskListWidget extends StatelessWidget {
                 onDelete: (int id) {
                   onDelete(id);
                 },
+                onEdit: () => onEdit(),
               ),
             );
           },

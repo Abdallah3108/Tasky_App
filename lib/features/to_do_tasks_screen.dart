@@ -119,6 +119,9 @@ class _ToDoTasksScreenState extends State<ToDoTasksScreen> {
               onDelete: (int? id) {
                 _deleteTask(id);
               },
+              onEdit: () {
+                _loadTasks();
+              },
             ),
           ),
         ),
