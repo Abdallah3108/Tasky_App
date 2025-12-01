@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,6 +22,7 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   String? username;
+  String? userImagePath;
   List<TaskModel> tasks = [];
   bool isDone = false;
   int totalTask = 0;
@@ -37,6 +39,7 @@ class _HomeViewState extends State<HomeView> {
   void _loadUserName() async {
     setState(() {
       username = PreferencesManager().getString('username');
+      userImagePath = PreferencesManager().getString('user_image');
     });
   }
 
@@ -120,7 +123,10 @@ class _HomeViewState extends State<HomeView> {
                     Row(
                       children: [
                         CircleAvatar(
-                          backgroundImage: AssetImage('assets/person.png'),
+                          backgroundImage:
+                              userImagePath == null
+                                  ? AssetImage('assets/person.png')
+                                  : FileImage(File(userImagePath!)),
                         ),
                         SizedBox(width: 8.w),
                         Column(

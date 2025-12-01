@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:taskyapp2/core/services/preferences_manager.dart';
 import 'package:taskyapp2/core/theme/theme_controller.dart';
 import 'package:taskyapp2/core/widgets/custom_svg_picture.dart';
@@ -20,7 +21,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String? username;
   late String motivationQuote;
   bool isLoading = true;
-  File? _selectedImage;
+  String? userImagePath;
 
   @override
   void initState() {
@@ -34,6 +35,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       motivationQuote =
           PreferencesManager().getString('motivationQuote') ??
           'One task at a time. One step closer.';
+      userImagePath = PreferencesManager().getString('user_image');
       isLoading = false;
     });
   }
@@ -64,9 +66,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       children: [
                         CircleAvatar(
                           backgroundImage:
-                              _selectedImage == null
+                              userImagePath == null
                                   ? AssetImage('assets/person.png')
-                                  : FileImage(_selectedImage!),
+                                  : FileImage(File(userImagePath!)),
                           backgroundColor: Colors.transparent,
                           radius: 55,
                         ),
@@ -75,14 +77,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           right: 0,
                           child: GestureDetector(
                             onTap: () async {
-                              XFile? image = await ImagePicker().pickImage(
-                                source: ImageSource.gallery,
-                              );
-                              if (image != null) {
+                              showImageSourceDialog(context, (XFile file) {
+                                _saveImage(file);
                                 setState(() {
-                                  _selectedImage = File(image.path);
+                                  userImagePath = file.path;
                                 });
-                              }
+                              });
                             },
                             child: Container(
                               width: 45.w,
@@ -210,5 +210,74 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ],
           ),
         );
+  }
+
+  void showImageSourceDialog(
+    BuildContext context,
+    Function(XFile) selectedFile,
+  ) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return SimpleDialog(
+          title: Text(
+            'Choose Image Source',
+            style: Theme.of(
+              context,
+            ).textTheme.labelMedium!.copyWith(fontSize: 20.sp),
+          ),
+          children: [
+            SimpleDialogOption(
+              onPressed: () async {
+                Navigator.pop(context);
+                XFile? image = await ImagePicker().pickImage(
+                  source: ImageSource.camera,
+                );
+                if (image != null) {
+                  selectedFile(image);
+                }
+              },
+              child: Row(
+                children: [
+                  Icon(Icons.camera_alt),
+                  SizedBox(width: 8.w),
+                  Text(
+                    'Camera',
+                    style: Theme.of(context).textTheme.labelMedium,
+                  ),
+                ],
+              ),
+            ),
+            SimpleDialogOption(
+              onPressed: () async {
+                Navigator.pop(context);
+                XFile? image = await ImagePicker().pickImage(
+                  source: ImageSource.gallery,
+                );
+                if (image != null) {
+                  selectedFile(image);
+                }
+              },
+              child: Row(
+                children: [
+                  Icon(Icons.photo_library),
+                  SizedBox(width: 8.w),
+                  Text(
+                    'Gallery',
+                    style: Theme.of(context).textTheme.labelMedium,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _saveImage(XFile file) async {
+    final appDir = await getApplicationSupportDirectory();
+    final newFile = await File(file.path).copy('${appDir.path}/${file.name}');
+    PreferencesManager().setString('user_image', newFile.path);
   }
 }
