@@ -8,9 +8,9 @@ import 'package:taskyapp2/models/task_model.dart';
 
 import '../enums/task_item_actions_enum.dart';
 import '../utils/app_colors.dart';
-import 'custom_check_box.dart';
-import 'custom_elevated_button.dart';
-import 'custom_text_form_field.dart';
+import '../widgets/custom_check_box.dart';
+import '../widgets/custom_elevated_button.dart';
+import '../widgets/custom_text_form_field.dart';
 
 class TaskItemWidget extends StatelessWidget {
   const TaskItemWidget({

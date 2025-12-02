@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:taskyapp2/core/widgets/task_item_widget.dart';
+import 'package:taskyapp2/core/shared_components/task_item_widget.dart';
 
 import '../../models/task_model.dart';
 

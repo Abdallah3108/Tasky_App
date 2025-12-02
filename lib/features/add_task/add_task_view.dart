@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taskyapp2/models/task_model.dart';
 
-import '../core/services/preferences_manager.dart';
-import '../core/utils/app_colors.dart';
-import '../core/widgets/custom_elevated_button.dart';
-import '../core/widgets/custom_text_form_field.dart';
-import 'main_screen.dart';
+import '../../core/services/preferences_manager.dart';
+import '../../core/utils/app_colors.dart';
+import '../../core/widgets/custom_elevated_button.dart';
+import '../../core/widgets/custom_text_form_field.dart';
+import '../navigation/main_screen.dart';
 
 class AddTaskView extends StatefulWidget {
   const AddTaskView({super.key});

@@ -6,10 +6,10 @@ import 'package:taskyapp2/core/services/preferences_manager.dart';
 import 'package:taskyapp2/core/widgets/custom_svg_picture.dart';
 import 'package:taskyapp2/models/task_model.dart';
 
-import '../../features/high_priorty_tasks_view.dart';
-import '../theme/theme_controller.dart';
-import '../utils/app_colors.dart';
-import 'custom_check_box.dart';
+import '../../../core/theme/theme_controller.dart';
+import '../../../core/utils/app_colors.dart';
+import '../../../core/widgets/custom_check_box.dart';
+import '../../tasks/high_priorty_tasks_view.dart';
 
 class HighPriorityTasksWidget extends StatelessWidget {
   const HighPriorityTasksWidget({

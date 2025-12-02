@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:taskyapp2/core/widgets/task_list_widget.dart';
+import 'package:taskyapp2/widgets/task_list_widget.dart';
 
-import '../core/services/preferences_manager.dart';
-import '../models/task_model.dart';
+import '../../core/services/preferences_manager.dart';
+import '../../models/task_model.dart';
 
 class CompletedTasksView extends StatefulWidget {
   const CompletedTasksView({super.key});

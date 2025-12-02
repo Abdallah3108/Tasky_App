@@ -5,8 +5,8 @@ import 'package:taskyapp2/core/theme/dark_theme.dart';
 import 'package:taskyapp2/core/theme/light_theme.dart';
 import 'package:taskyapp2/core/theme/theme_controller.dart';
 
-import 'features/main_screen.dart';
-import 'features/welcome_screen.dart';
+import 'features/navigation/main_screen.dart';
+import 'features/welcome/welcome_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taskyapp2/core/services/preferences_manager.dart';
 
-import '../core/widgets/task_list_widget.dart';
-import '../models/task_model.dart';
+import '../../models/task_model.dart';
+import '../../widgets/task_list_widget.dart';
 
 class HighPriorityTasksView extends StatefulWidget {
   const HighPriorityTasksView({super.key});

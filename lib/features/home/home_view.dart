@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taskyapp2/core/services/preferences_manager.dart';
 import 'package:taskyapp2/core/widgets/custom_svg_picture.dart';
-import 'package:taskyapp2/core/widgets/sliver_task_list_widget.dart';
+import 'package:taskyapp2/features/home/components/sliver_task_list_widget.dart';
 
-import '../core/utils/app_colors.dart';
-import '../core/widgets/achieved_tasks_widget.dart';
-import '../core/widgets/high_priority_tasks_widget.dart';
-import '../models/task_model.dart';
-import 'add_task_view.dart';
+import '../../core/utils/app_colors.dart';
+import '../../models/task_model.dart';
+import '../add_task/add_task_view.dart';
+import 'components/achieved_tasks_widget.dart';
+import 'components/high_priority_tasks_widget.dart';
 
 class HomeView extends StatefulWidget {
   HomeView({super.key});

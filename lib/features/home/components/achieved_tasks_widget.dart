@@ -3,8 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../theme/theme_controller.dart';
-import '../utils/app_colors.dart';
+import '../../../core/theme/theme_controller.dart';
+import '../../../core/utils/app_colors.dart';
 
 class AchievedTasksWidget extends StatelessWidget {
   const AchievedTasksWidget({
